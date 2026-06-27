@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر عسل نحول 🐝</title>
+<style>body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl; /* للغة العربية */
+    background-color: #f4f4f9;
+    padding: 20px;
+}
+
+.comment-session {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.comment-form input, .comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* لضمان عدم خروج العناصر عن الحواف */
+}
+
+.comment-form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.comment-form button:hover {
+    background-color: #218838;
+}
+
+.comment-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.comment-card h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.comment-card p {
+    margin: 0;
+    color: #555;
+}</style>
+</head>
+<body>
+<div class="comment-session">
+    <h2>قسم التعليقات</h2>
+    
+    <!-- صندوق كتابة التعليق -->
+    <div class="comment-form">
+        <input type="text" id="username" placeholder="اسمهك...">
+        <textarea id="comment-text" placeholder="اكتب تعليقك هنا..."></textarea>
+        <button onclick="addComment()">نشر التعليق</button>
+    </div>
+
+    <!-- قائمة التعليقات -->
+    <div id="comments-container">
+        <!-- التعليقات ستظهر هنا بواسطة الجافاسكريبت -->
+    </div>
+</div>
+<script>function addComment() {
+    // جلب القيم من المدخلات
+    const name = document.getElementById('username').value;
+    const text = document.getElementById('comment-text').value;
+    const container = document.getElementById('comments-container');
+
+    // التأكد من أن الحقول ليست فارغة
+    if (name === "" || text === "") {
+        alert("من فضلك اكتب اسمك وتعليقك!");
+        return;
+    }
+
+    // إنشاء عنصر التعليق الجديد
+    const commentDiv = document.createElement('div');
+    commentDiv.classList.add('comment-card');
+
+    commentDiv.innerHTML = `
+        <h4>${name}</h4>
+        <p>${text}</p>
+    `;
+
+    // إضافة التعليق إلى القائمة
+    container.prepend(commentDiv); // prepend تضع التعليق الجديد في الأعلى
+
+    // مسح الخانات بعد الإرسال
+    document.getElementById('username').value = "";
+    document.getElementById('comment-text').value = "";
+    
+}</script>
+</body>
+</html>
