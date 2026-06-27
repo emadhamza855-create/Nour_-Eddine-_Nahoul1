@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر عسل نحول 🐝</title>
+    
+    <link rel="icon" type="image/jpeg" href="loge.jpg">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gold: #FFB300; 
+            --gold-light: #fffcf2;
+            --dark: #1d1d1f; 
+            --bg: #F5F5F7; 
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        * { box-sizing: border-box; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Cairo', sans-serif; }
+        body { margin: 0; background: var(--bg); color: var(--dark); overflow-x: hidden; }
+
+        /* --- الهيدر (النافبار) --- */
+        header { 
+            background: rgba(255, 255, 255, 0.95); padding: 12px 5%; display: flex; 
+            justify-content: space-between; align-items: center; 
+            position: sticky; top:0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo { 
+            font-weight: 900; font-size: 24px; color: var(--gold); 
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+        }
+        .logo img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+        .nav-btn { border: none; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        
+        .adv-btn { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .adv-btn:hover { background: #ffeeba; transform: translateY(-2px); }
+        
+        .learn-btn { background: #333; color: white; }
+        .learn-btn:hover { background: #000; transform: translateY(-2px); }
+
+        .cart-btn { background: var(--gold); color: white; position: relative; display: flex; align-items: center; gap: 5px; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .cart-btn:hover { background: #e6a100; transform: scale(1.05); }
+        
+        #count { background: var(--danger); color: white; border-radius: 50%; padding: 2px 7px; font-size: 11px; font-weight: bold; }
+
+        /* --- الصفحة الرئيسية --- */
+        #home-page, #store-view, #admin-panel { padding: 30px 5%; }
+        .hero { padding: 50px 20px; text-align: center; background: linear-gradient(135deg, #fffcf2 0%, #fff9e6 100%); border-radius: 30px; margin-bottom: 30px; border: 1px solid #f9ebbe; box-shadow: 0 10px 30px rgba(255,179,0,0.05); }
+        .hero h1 { font-size: 34px; margin: 0 0 10px 0; color: #5d4037; font-weight: 900; }
+        .hero p { margin: 0; color: #7d5c4c; font-size: 16px; }
+
+        .icon-grid { display: flex; gap: 40px; justify-content: center; padding: 20px 0; flex-wrap: wrap; }
+        .icon-item { text-align: center; cursor: pointer; width: 120px; }
+        
+        .app-box { 
+            width: 100px; height: 100px; border-radius: 28px; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 50px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.06); 
+            margin: 0 auto 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.03);
+        }
+        .icon-item:hover .app-box { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 35px rgba(255,179,0,0.15); }
+        .icon-item b { font-size: 15px; color: var(--dark); }
+        
+        .nahoul-bg { background: linear-gradient(145deg, #FFD54F, #FFB300); }
+        .others-bg { background: linear-gradient(145deg, #A1887F, #8D6E63); }
+        .app-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- المتجر والمنتجات --- */
+        #store-view { display: none; }
+        .prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 20px; }
+        .prod-card { background: white; padding: 25px; border-radius: 24px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
+        .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.07); }
+        .prod-card h3 { margin: 10px 0 5px 0; font-size: 18px; }
+        .price { color: var(--gold); font-weight: 900; margin-bottom: 15px; display: block; font-size: 20px; }
+        
+        .add-btn { 
+            background: var(--dark); color: white; border: none; width: 100%; 
+            padding: 12px; border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 14px;
+        }
+        .add-btn:hover { background: var(--gold); color: var(--dark); }
+
+        .info-area { padding: 20px 0; display: flex; flex-direction: column; gap: 15px; }
+        .info-card { 
+            background: white; padding: 20px; border-radius: 18px; 
+            border-right: 6px solid var(--gold); box-shadow: 0 4px 15px rgba(0,0,0,0.02); 
+        }
+        .info-card h3 { margin: 0 0 5px 0; font-size: 16px; }
+        .info-card p { margin: 0; color: #666; font-size: 14px; }
+
+        /* --- التصميم المطور للسلة --- */
+        .modal { display: none; position: fixed; top: 0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; backdrop-filter: blur(8px); }
+        .modal-content { 
+            background: white; width: 92%; max-width: 440px; 
+            margin: 60px auto; padding: 30px; border-radius: 28px; 
+            position: relative; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .close-x { position: absolute; top: 20px; left: 20px; color: var(--danger); border: none; background: #fff0f0; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+        .close-x:hover { background: var(--danger); color: white; }
+
+        .cart-item-row {
+            background: #f8f9fa; padding: 12px 15px; border-radius: 14px;
+            margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid #eee; text-align: right; font-weight: bold; font-size: 14px;
+        }
+
+        /* --- تصميم صفحة الدخول المودرن --- */
+        #login-view { display: none; padding: 60px 20px; }
+        .login-card { 
+            background: white; padding: 40px 30px; border-radius: 30px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08); max-width: 400px; margin: 0 auto; 
+            text-align: center; border: 1px solid #efeef2;
+            position: relative; overflow: hidden;
+        }
+        .login-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--gold), #ffdb70);
+        }
+        .login-card h2 { margin: 0 0 10px 0; font-weight: 900; color: var(--dark); }
+        .login-card p { color: #666; font-size: 14px; margin-bottom: 25px; }
+        
+        .modern-input { 
+            width: 100%; padding: 14px 16px; margin: 8px 0; 
+            border: 1px solid #e0e0e0; border-radius: 14px; outline: none; 
+            font-size: 14px; background: #f9f9f9; font-weight: bold;
+        }
+        .modern-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 4px rgba(255,179,0,0.1); }
+        
+        /* --- لوحة تحكم الإدارة الاحترافية --- */
+        #admin-panel { display: none; }
+        .admin-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: white; padding: 20px 30px; border-radius: 20px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 25px;
+        }
+        .admin-header h2 { margin: 0; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        
+        .modern-table-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th, td { padding: 16px 20px; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
+        th { background: #fafafa; color: #666; font-weight: bold; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fffdf7; }
+        
+        .badge-prod { background: #fff8e1; color: #b78103; padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: bold; display: inline-block; }
+        .btn-del { background: #fff0f0; color: var(--danger); border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .btn-del:hover { background: var(--danger); color: white; }
+
+        .advisor-option { background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 15px; margin: 10px 0; cursor: pointer; width: 100%; font-weight: bold; text-align: right; display: flex; align-items: center; gap: 10px; }
+        .advisor-option:hover { background: var(--gold); color: white; border-color: var(--gold); }
+        #adv-res { margin-top: 20px; padding: 15px; background: #fffcf2; border-radius: 12px; display: none; border: 1px solid var(--gold); font-weight: bold; color: #856404; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="window.location.href='comment.html'">
+            <img src="loge.jpg" alt="logo">
+            نحول 🐝
+        </div>
+        <div class="nav-links">
+            <button onclick="openAdvisor()" class="nav-btn adv-btn">المستشار 🤖</button>
+            <button onclick="openVideo()" class="nav-btn learn-btn">Learn 📖</button>
+            <button onclick="openCart()" class="nav-btn cart-btn">🛒 <span id="count">0</span></button>
+        </div>
+    </header>
+
+    <main id="home-page">
+        <section class="hero">
+            <h1>عسل نحل نحول 🍯</h1>
+            <p>الجودة اللي تستاهلها من مناحلنا إليك مباشرة</p>
+        </section>
+
+        <section class="icon-grid">
+            <div class="icon-item" onclick="openStore('nahoul')">
+                <div class="app-box nahoul-bg"><img src="loge.jpg"></div>
+                <b>عسل نحول</b>
+            </div>
+            <div class="icon-item" onclick="openStore('others')">
+                <div class="app-box others-bg">🏺</div>
+                <b>مناحل أخرى</b>
+            </div>
+        </section>
+
+        <section class="info-area">
+            <div class="info-card">
+                <h3>🍯 جودة نحول العالية</h3>
+                <p>عسل نحل طبيعي ونقي 100% مختبر ومضمون لأعلى مستويات الصحة.</p>
+            </div>
+            <div class="info-card">
+                <h3>🚚 شحن وتوصيل سريع</h3>
+                <p>توصيل آمن وسريع لباب بيتك لضمان الحفاظ على نكهة العسل الطازجة.</p>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 40px 0;">
+            <button onclick="showLogin()" style="background:rgba(0,0,0,0.04); border:none; color:#888; padding: 8px 16px; border-radius: 12px; cursor:pointer; font-size: 13px; font-weight: bold;">دخول الإدارة 🔐</button>
+        </footer>
+    </main>
+
+    <section id="store-view">
+        <button onclick="showHome()" style="border:none; background:#fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); padding:10px 20px; border-radius:12px; cursor:pointer; margin-bottom:25px; font-weight: bold; display: flex; align-items: center; gap: 5px;">⬅️ العودة للرئيسية</button>
+        <h2 id="store-title" style="text-align:center; color: var(--gold); margin-bottom: 30px; font-weight: 900;"></h2>
+        <div id="products-list" class="prod-grid"></div>
+    </section>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-x" onclick="closeModal('cart-modal')">✕</button>
+            <h3 style="margin-top: 0; font-weight: 900; font-size: 20px;">🛒 سلة طلبات نحول</h3>
+            
+            <div id="cart-items" style="max-height: 200px; overflow-y: auto; margin: 15px 0; padding: 5px;"></div>
+            
+            <form id="orderForm" style="margin-top: 15px;">
+                <input type="text" id="custName" class="modern-input" placeholder="الاسم الكامل للعميل" required>
+                <input type="tel" id="custPhone" class="modern-input" placeholder="رقم الهاتف للتواصل" required>
+                <input type="text" id="custAddr" class="modern-input" placeholder="العنوان بالتفصيل" required>
+                <button type="submit" class="add-btn" style="background: var(--success); margin-top: 12px; padding: 14px; font-size: 15px;">تأكيد إرسال الطلب الآن ✅</button>
+            </form>
+        </div>
+    </div>
+
+    <section id="login-view">
+        <div class="login-card">
+            <h2>دخول الإدارة 🔐</h2>
+            <p>لوحة التحكم السرية الخاصة بمتجر نحول</p>
+            <input type="text" id="user" class="modern-input" placeholder="اسم المستخدم الإداري">
+            <input type="password" id="pass" class="modern-input" placeholder="كلمة المرور السرية">
+            <button class="add-btn" onclick="checkLogin()" style="margin-top: 10px; padding: 14px; background: var(--gold); color: white;">تسجيل الدخول</button>
+            <button onclick="showHome()" style="background:none; border:none; color:var(--danger); margin-top:15px; cursor: pointer; font-weight: bold; font-size: 14px;">إلغاء والعودة</button>
+        </div>
+    </section>
+
+    <section id="admin-panel">
+        <div class="admin-header">
+            <h2>📦 إدارة طلبات عسل نحول الواردة</h2>
+            <button onclick="location.reload()" style="background: var(--danger); color:white; border:none; padding:10px 20px; border-radius:12px; cursor: pointer; font-weight: bold;">تسجيل الخروج</button>
+        </div>
+        
+        <div class="modern-table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم العميل</th>
+                        <th>رقم الهاتف</th>
+                        <th>المنتجات المطلوبة</th>
+                        <th style="text-align: center;">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <div id="advisor-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-x" onclick="closeAdvisor()">✕</button>
+            <h2 style="color: var(--gold); margin-top:0; font-weight: 900;">🤖 مستشار نحول الذكي</h2>
+            <p style="color:#666;">اختر هدفك الصحي لترشيح العسل المناسب:</p>
+            <button class="advisor-option" onclick="getAdvice('immunity')">🛡️ تقوية جهاز المناعة وحماية الجسم</button>
+            <button class="advisor-option" onclick="getAdvice('energy')">⚡ طاقة، نشاط، ودعم قوي للتمرين</button>
+            <button class="advisor-option" onclick="getAdvice('stomach')">🌱 تحسين الهضم وراحة المعدة والقولون</button>
+            <div id="adv-res"></div>
+        </div>
+    </div>
+
+    <div id="video-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="close-x" onclick="closeVideo()">✕</button>
+            <video id="vid" controls style="width:100%; border-radius:18px; margin-top:15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);"><source src="learn.mp4" type="video/mp4"></video>
+        </div>
+    </div>
+    
+    <script>
+        let cart = [];
+        let orders = JSON.parse(localStorage.getItem('nahoul_db')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                Notification.requestPermission();
+            }
+        });
+
+        const productsData = {
+            nahoul: [
+                {n: 'عسل سدر ملكي فاخر', p: 250},
+                {n: 'عسل موالح نحول المنعش', p: 140},
+                {n: 'عسل برسيم طبيعي نقي', p: 100}
+            ],
+            others: [
+                {n: 'عسل حبة البركة البري', p: 180},
+                {n: 'عسل جبلي كشميري أصلي', p: 350}
+            ]
+        };
+
+        function openStore(type) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('store-view').style.display = 'block';
+            const title = document.getElementById('store-title');
+            title.innerText = type === 'nahoul' ? "منتجات عسل نحول 🐝" : "منتجات المناحل الأخرى 🏺";
+            
+            const list = document.getElementById('products-list');
+            list.innerHTML = productsData[type].map(prod => `
+                <div class="prod-card">
+                    <div style="font-size:45px; margin-bottom:10px;">🍯</div>
+                    <h3 style="font-weight:700;">${prod.n}</h3>
+                    <span class="price">${prod.p} ج.م</span>
+                    <button class="add-btn" onclick="addToCart('${prod.n}')">إضافة إلى السلة</button>
+                </div>
+            `).join('');
+            window.scrollTo(0,0);
+        }
+
+        function showHome() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('store-view').style.display = 'none';
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'none';
+        }
+
+        function addToCart(item) {
+            cart.push(item);
+            document.getElementById('count').innerText = cart.length;
+            const btn = event.target;
+            btn.innerText = "✅ تمت الإضافة لـ سلتك";
+            btn.style.background = "#28a745"; /* تم التصليح هنا بوضع اللون مباشرة */
+            setTimeout(() => {
+                btn.innerText = "إضافة إلى السلة";
+                btn.style.background = "";
+            }, 1000);
+        }
+
+        function openCart() {
+            if(cart.length === 0) return alert('السلة فارغة حالياً، تصفح المتجر وأضف العسل أولاً!');
+            
+            const container = document.getElementById('cart-items');
+            container.innerHTML = cart.map((item, index) => `
+                <div class="cart-item-row">
+                    <span>🍯 ${item}</span>
+                    <span style="color:var(--gold)">1 قطعة</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('cart-modal').style.display = 'block';
+        }
+
+        document.getElementById('orderForm').onsubmit = function(e) {
+            e.preventDefault();
+            const customerName = document.getElementById('custName').value;
+            const customerPhone = document.getElementById('custPhone').value;
+            const customerAddr = document.getElementById('custAddr').value;
+            
+            const order = {
+                id: Date.now(),
+                n: customerName,
+                p: customerPhone,
+                i: cart.join(' + ')
+            };
+            orders.push(order);
+            localStorage.setItem('nahoul_db', JSON.stringify(orders));
+            
+            showOrderNotification(customerName, order.i);
+
+            alert('تم استلام طلبك بنجاح يا بطل! سيتم التواصل معك فوراً لتأكيد الشحن.');
+            cart = [];
+            document.getElementById('count').innerText = "0";
+            closeModal('cart-modal');
+            this.reset();
+        };
+
+        function showOrderNotification(name, items) {
+            if (Notification.permission === "granted") {
+                new Notification("🚨 طلب جديد في متجر نحول!", {
+                    body: `العميل ${name} طلب: ${items}`,
+                    icon: 'loge.jpg'
+                });
+            }
+        }
+
+        function showLogin() { 
+            document.getElementById('home-page').style.display='none'; 
+            document.getElementById('login-view').style.display='block'; 
+        }
+
+        function checkLogin() {
+            if(document.getElementById('user').value === 'admin' && document.getElementById('pass').value === '123') {
+                document.getElementById('login-view').style.display='none';
+                document.getElementById('admin-panel').style.display='block';
+                renderAdmin();
+            } else { alert('بيانات الدخول الإدارية غير صحيحة!'); }
+        }
+
+        function renderAdmin() {
+            const rows = document.getElementById('rows');
+            if(orders.length === 0) {
+                rows.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#999; padding:30px;">لا توجد طلبات واردة حالياً</td></tr>`;
+                return;
+            }
+            rows.innerHTML = orders.map(o => `
+                <tr>
+                    <td style="font-weight:bold; color:var(--dark);">${o.n}</td>
+                    <td style="direction:ltr; text-align:right; font-weight:bold; color:#555;">${o.p}</td>
+                    <td><span class="badge-prod">${o.i}</span></td>
+                    <td style="text-align: center;"><button class="btn-del" onclick="del(${o.id})">حذف الطلب</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function del(id) {
+            if(confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) {
+                orders = orders.filter(o => o.id !== id);
+                localStorage.setItem('nahoul_db', JSON.stringify(orders));
+                renderAdmin();
+            }
+        }
+
+        function openAdvisor() { document.getElementById('advisor-modal').style.display = 'block'; }
+        function closeAdvisor() { 
+            document.getElementById('advisor-modal').style.display = 'none'; 
+            document.getElementById('adv-res').style.display = 'none';
+        }
+        function getAdvice(type) {
+            const res = document.getElementById('adv-res');
+            res.style.display = 'block';
+            if(type === 'immunity') res.innerText = "🐝 ينصحك نحول بـ 'عسل السدر الملكي الفاخر' كخيار أول وأقوى لتعزيز المناعة العامة.";
+            if(type === 'energy') res.innerText = "🐝 'عسل حبة البركة البري' هو الاختيار المثالي لإعطائك طاقة مذهلة قبل التمرين والنشاط البدني.";
+            if(type === 'stomach') res.innerText = "🐝 لراحة جهازك الهضمي، جرب 'عسل البرسيم الطبيعي النقي' الخفيف واللطيف على المعدة.";
+        }
+        function openVideo() { document.getElementById('video-modal').style.display='block'; document.getElementById('vid').play(); }
+        function closeVideo() { document.getElementById('video-modal').style.display='none'; document.getElementById('vid').pause(); }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
+</body>
+</html>
